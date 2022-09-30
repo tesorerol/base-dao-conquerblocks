@@ -8,7 +8,7 @@ contract Treasury is Ownable {
     address public payee; // 0x000000000
     bool public isReleased; // false
 
-    constructor(address _payee){
+    constructor(address _payee) payable{
         payee = _payee;
         totalFunds = msg.value;
         isReleased = false;

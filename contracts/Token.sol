@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 
 contract ConquerTokenDao is ERC20Votes  {
     uint256 _initialSupply = 1000e18; // 1000e18 -> 1000000000000000000000
-    constructor(string memory _name, string memory _symbol) ERC20Votes(_name,_symbol) ERC20Permit(_name) {
+    constructor(string memory _name, string memory _symbol) ERC20(_name,_symbol) ERC20Permit(_name) {
      _mint(msg.sender,_initialSupply);
     }
 

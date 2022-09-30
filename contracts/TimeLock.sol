@@ -8,5 +8,5 @@ contract TimeLockConquerDao is TimelockController {
         uint256 _minDaly, 
         address[] memory _proposers, 
         address[] memory _executers 
-    ) TimelockController(_minDaly,_proposers,_executers)
+    ) TimelockController(_minDaly,_proposers,_executers){}
 }
