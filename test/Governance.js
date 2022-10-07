@@ -1,6 +1,4 @@
-const { time, loadFixture, } = require("@nomicfoundation/hardhat-network-helpers");
-const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
-const { expect } = require("chai");
+const {  loadFixture, } = require("@nomicfoundation/hardhat-network-helpers");
 const { ethers } = require("hardhat");
 const Treasuryabi = require("../artifacts/contracts/Treasury.sol/Treasury.json");
 
@@ -12,7 +10,7 @@ describe("Governance Test", function () {
         const Treasury = await ethers.getContractFactory("Treasury");
         const TimeLock = await ethers.getContractFactory("TimeLockConquerDao");
         const Governance = await ethers.getContractFactory("ConquerBlockGovernance");
-        let isRelease, funds, blockNumber, proposalState, vote;
+
 
         const supply = web3.utils.toWei('1000', 'ether'); // 1000 tokens
 
