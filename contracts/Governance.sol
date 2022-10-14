@@ -53,7 +53,7 @@ contract ConquerBlockGovernance is Governor, GovernorCountingSimple, GovernorVot
         override(Governor, IGovernor)
         returns (uint256)
     {
-        return super.propose(targets, values, calldatas, description);;
+        return super.propose(targets, values, calldatas, description);
     }
 
     function _execute(uint256 proposalId, address[] memory targets, uint256[] memory values, bytes[] memory calldatas, bytes32 descriptionHash)
