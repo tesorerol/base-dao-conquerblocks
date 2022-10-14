@@ -1,6 +1,6 @@
 const {  loadFixture, } = require("@nomicfoundation/hardhat-network-helpers");
 const { ethers } = require("hardhat");
-const Treasuryabi = require("../artifacts/contracts/Treasury.sol/Treasury.json");
+const Treasuryabi = require("../src/artifacts/contracts/Treasury.sol/Treasury.json");
 
 describe("Governance Test", function () {
 
@@ -41,7 +41,7 @@ describe("Governance Test", function () {
 
         const Quorum = 5 // Percentage of total supply of tokens needed to aprove proposals (5%)
         const VotingDelay = 0 // How many blocks after proposal until voting becomes active
-        const VotingPeriod = 5 // How many blocks to allow voters to vote
+        const VotingPeriod = 50400 // How many blocks to allow voters to vote ( 50400-> 1 week )
 
         const governance = await Governance.deploy(token.address, timelock.address, Quorum, VotingDelay, VotingPeriod);
 
@@ -58,7 +58,7 @@ describe("Governance Test", function () {
         // In the provided example, once the proposal is successful and executed,
         // timelock contract will be responsible for calling the function.
 
-        const fondos = web3.utils.toWei('25', 'ether');
+        const fondos = web3.utils.toWei('0.001', 'ether');
 
         const treasury = await Treasury.deploy(executor.address, { value: fondos });
 
@@ -91,12 +91,14 @@ describe("Governance Test", function () {
         const encodedFunction = iface.encodeFunctionData("releaseFunds")
 
         const description = "Release Funds from Treasury"
-
-        const sendPropose = await governance.connect(proposer).propose([treasury.address], [0], [encodedFunction], description)
+        console.log(encodedFunction)
+        const sendPropose = await governance.connect(proposer).propose([treasury.address], [0], [0], description)
         const tx = await sendPropose.wait()
         const id = tx.events[0].args.proposalId // 1
-
+        console.log(id)
         console.log(`Created Proposal: ${id.toString()}\n`)
+
+        console.log(await governance.ProposalList())
 
         proposalState = await governance.state(id)
         console.log(`Current state of proposal: ${proposalState.toString()} (Pending) \n`);
@@ -107,7 +109,7 @@ describe("Governance Test", function () {
         const deadline = await governance.proposalDeadline(id)
         console.log(`Proposal deadline on block ${deadline.toString()}\n`)
 
-        blockNumber = await web3.eth.getBlockNumber() // 8000 -> 2000
+        blockNumber = await web3.eth.getBlockNumber() 
         console.log(`Current blocknumber: ${blockNumber}\n`)
 
         const quorum = await governance.quorum(blockNumber - 1)

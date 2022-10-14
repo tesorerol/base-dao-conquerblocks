@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/governance/extensions/GovernorTimelockControl.so
 contract ConquerBlockGovernance is Governor, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction, GovernorTimelockControl {
     uint256 private VotingDelay;
     uint256 private VotingPeriod;
+
     constructor(IVotes _token, TimelockController _timelock,uint256 _quorum,uint256 _votingDelay,uint256 _votingPeriod)
         Governor("Governor ConquerBlock")
         GovernorVotes(_token)
@@ -20,11 +21,11 @@ contract ConquerBlockGovernance is Governor, GovernorCountingSimple, GovernorVot
     }
 
     function votingDelay() public view override returns (uint256) {
-        return VotingDelay; // 1 block
+        return VotingDelay;
     }
 
     function votingPeriod() public view override returns (uint256) {
-        return VotingPeriod; // 50400-> 1 week
+        return VotingPeriod; 
     }
 
     // The following functions are overrides required by Solidity.
@@ -52,7 +53,9 @@ contract ConquerBlockGovernance is Governor, GovernorCountingSimple, GovernorVot
         override(Governor, IGovernor)
         returns (uint256)
     {
-        return super.propose(targets, values, calldatas, description);
+        uint256 Id =super.propose(targets, values, calldatas, description);
+        _proposalList.push(Id);
+        return Id;
     }
 
     function _execute(uint256 proposalId, address[] memory targets, uint256[] memory values, bytes[] memory calldatas, bytes32 descriptionHash)
@@ -87,4 +90,5 @@ contract ConquerBlockGovernance is Governor, GovernorCountingSimple, GovernorVot
     {
         return super.supportsInterface(interfaceId);
     }
+    
 }
